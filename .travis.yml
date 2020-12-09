@@ -1,0 +1,10 @@
+language: bash
+
+services: docker
+
+install:
+    - make bash
+
+script:
+    - docker exec --user=travis processor_console make test
+    - docker exec --user=travis processor_console make cs-check
