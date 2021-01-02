@@ -22,7 +22,8 @@ class DraftCreatorTest extends TestCase
     {
         $container = new Common\SomeContainerVersion();
 
-        $this->expectException(Exception\EmptyContainerException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('empty_container');
 
         $version = $this->draftCreator->create($container);
     }
@@ -31,7 +32,8 @@ class DraftCreatorTest extends TestCase
     {
         $container = $this->creator->create(Common\SomeContainerVersion::class);
 
-        $this->expectException(Exception\DraftAlreadyExistsException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('draft_already_exists');
 
         $version = $this->draftCreator->create($container);
     }

@@ -2,8 +2,8 @@
 
 namespace Mmc\VersionManipulator\Component\Manipulator;
 
-use Mmc\VersionManipulator\Component\Exception\NothingToValidateException;
 use Mmc\VersionManipulator\Component\Exception\NotValidatableException;
+use Mmc\VersionManipulator\Component\Exception\RuntimeException;
 use Mmc\VersionManipulator\Component\Model\Status;
 use Mmc\VersionManipulator\Component\Model\VersionContainerInterface;
 use Mmc\VersionManipulator\Component\Model\VersionInterface;
@@ -28,7 +28,7 @@ class Publisher
         $draftVersion = $container->getDraft();
 
         if (!$draftVersion || Status::DRAFT !== $draftVersion->getStatus()) {
-            throw new NothingToValidateException();
+            throw new RuntimeException('nothing_to_validate');
         }
 
         $errors = $this->validator->validate(
@@ -38,7 +38,7 @@ class Publisher
         );
 
         if (count($errors)) {
-            throw new NotValidatableException($errors);
+            throw new NotValidatableException($draftVersion, $errors);
         }
 
         $validVersions = $container->getVersionsByStatus(Status::PUBLISHED);

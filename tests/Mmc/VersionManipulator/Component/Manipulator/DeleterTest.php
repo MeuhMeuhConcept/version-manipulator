@@ -23,7 +23,8 @@ class DeleterTest extends TestCase
     {
         $container = new Common\SomeContainerVersion();
 
-        $this->expectException(Exception\NothingToDeleteException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('nothing_to_delete');
 
         $version = $this->deleter->delete($container);
     }
@@ -41,7 +42,8 @@ class DeleterTest extends TestCase
         $this->assertCount(0, $container->getVersionsByStatus([Model\Status::PUBLISHED]));
         $this->assertCount(0, $container->getVersionsByStatus([Model\Status::DRAFT]));
 
-        $this->expectException(Exception\NothingToDeleteException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('nothing_to_delete');
 
         $version = $this->deleter->delete($container);
     }

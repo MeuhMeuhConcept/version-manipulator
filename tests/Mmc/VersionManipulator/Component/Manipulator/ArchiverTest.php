@@ -23,7 +23,8 @@ class ArchiverTest extends TestCase
     {
         $container = new Common\SomeContainerVersion();
 
-        $this->expectException(Exception\NothingToArchiveException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('nothing_to_archive');
 
         $version = $this->archiver->archive($container);
     }
@@ -43,7 +44,8 @@ class ArchiverTest extends TestCase
         $this->assertCount(0, $container->getVersionsByStatus([Model\Status::PUBLISHED]));
         $this->assertCount(0, $container->getVersionsByStatus([Model\Status::DRAFT]));
 
-        $this->expectException(Exception\NothingToArchiveException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('nothing_to_archive');
 
         $version = $this->archiver->archive($container);
     }

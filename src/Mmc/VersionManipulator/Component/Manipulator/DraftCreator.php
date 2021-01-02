@@ -2,8 +2,7 @@
 
 namespace Mmc\VersionManipulator\Component\Manipulator;
 
-use Mmc\VersionManipulator\Component\Exception\DraftAlreadyExistsException;
-use Mmc\VersionManipulator\Component\Exception\EmptyContainerException;
+use Mmc\VersionManipulator\Component\Exception\RuntimeException;
 use Mmc\VersionManipulator\Component\Model\Status;
 use Mmc\VersionManipulator\Component\Model\VersionContainerInterface;
 use Mmc\VersionManipulator\Component\Model\VersionInterface;
@@ -15,11 +14,11 @@ class DraftCreator
         $mainVersion = $container->getMainVersion();
 
         if (!$mainVersion) {
-            throw new EmptyContainerException();
+            throw new RuntimeException('empty_container');
         }
 
         if (Status::DRAFT === $mainVersion->getStatus()) {
-            throw new DraftAlreadyExistsException();
+            throw new RuntimeException('draft_already_exists');
         }
 
         $class = get_class($mainVersion);

@@ -2,7 +2,7 @@
 
 namespace Mmc\VersionManipulator\Component\Manipulator;
 
-use Mmc\VersionManipulator\Component\Exception\NothingToDeleteException;
+use Mmc\VersionManipulator\Component\Exception\RuntimeException;
 use Mmc\VersionManipulator\Component\Model\Status;
 use Mmc\VersionManipulator\Component\Model\VersionContainerInterface;
 use Mmc\VersionManipulator\Component\Model\VersionInterface;
@@ -14,7 +14,7 @@ class Deleter
         $draftVersion = $container->getDraft();
 
         if (!$draftVersion || Status::DRAFT !== $draftVersion->getStatus()) {
-            throw new NothingToDeleteException();
+            throw new RuntimeException('nothing_to_delete');
         }
 
         $draftVersion->setStatus(STATUS::DELETED);

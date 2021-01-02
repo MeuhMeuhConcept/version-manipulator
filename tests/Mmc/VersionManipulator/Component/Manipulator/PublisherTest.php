@@ -6,6 +6,8 @@ use Mmc\VersionManipulator\Component\Common;
 use Mmc\VersionManipulator\Component\Exception;
 use Mmc\VersionManipulator\Component\Model;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PublisherTest extends TestCase
@@ -30,7 +32,8 @@ class PublisherTest extends TestCase
     {
         $container = new Common\SomeContainerVersion();
 
-        $this->expectException(Exception\NothingToValidateException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('nothing_to_validate');
 
         $version = $this->publisher->publish($container);
     }
@@ -44,7 +47,7 @@ class PublisherTest extends TestCase
 
         $validator->expects($this->any())
             ->method('validate')
-            ->will($this->returnValue(['error1']));
+            ->will($this->returnValue(new ConstraintViolationList([new ConstraintViolation('error1', '', [], null, 'foo', 'bar')])));
 
         $this->expectException(Exception\NotValidatableException::class);
 
@@ -64,7 +67,8 @@ class PublisherTest extends TestCase
         $this->assertCount(1, $container->getVersionsByStatus([Model\Status::PUBLISHED]));
         $this->assertCount(0, $container->getVersionsByStatus([Model\Status::DRAFT]));
 
-        $this->expectException(Exception\NothingToValidateException::class);
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('nothing_to_validate');
 
         $version = $this->publisher->publish($container);
     }
