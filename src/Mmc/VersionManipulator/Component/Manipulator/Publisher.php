@@ -13,14 +13,10 @@ class Publisher
 {
     protected $validator;
 
-    protected $validationGroups;
-
     public function __construct(
-        ValidatorInterface $validator,
-        array $validationGroups = ['validate']
+        ValidatorInterface $validator
     ) {
         $this->validator = $validator;
-        $this->validationGroups = $validationGroups;
     }
 
     public function publish(VersionContainerInterface $container): VersionInterface
@@ -34,7 +30,7 @@ class Publisher
         $errors = $this->validator->validate(
             $draftVersion,
             null,
-            $this->validationGroups
+            $draftVersion->getValidationGroups()
         );
 
         if (count($errors)) {

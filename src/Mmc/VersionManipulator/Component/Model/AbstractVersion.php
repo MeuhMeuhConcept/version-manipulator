@@ -54,4 +54,9 @@ abstract class AbstractVersion implements VersionInterface
 
         return $this;
     }
+
+    public function getValidationGroups(): array
+    {
+        return ['Default', 'validate'];
+    }
 }

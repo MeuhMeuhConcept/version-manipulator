@@ -13,4 +13,6 @@ interface VersionInterface
     public function setContainer(VersionContainerInterface $container = null): self;
 
     public function getContainer(): VersionContainerInterface;
+
+    public function getValidationGroups(): array;
 }
